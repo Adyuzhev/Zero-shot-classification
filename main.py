@@ -1,9 +1,32 @@
 from transformers import pipeline
+from fastapi import FastAPI
+from pydantic import BaseModel
 
+class Item(BaseModel):
+    sequence_to_classify: str
+    candidate_labels: list
+
+app = FastAPI ()
 classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
 
-sequence_to_classify = "В современном мире за космос принимают бескрайнее пространство, начинающееся сразу после атмосферы Земли. В нем находятся планеты, звезды, галактики и другие небесные объекты. Для большего удобства космос разделяют на ближний, который можно исследовать с помощью современных спутников и аппаратов, и дальний, добраться до которого пока невозможно."
 
-candidate_labels = ['космос', 'полет', 'Земля', 'готовить', 'спать']
+@app.get("/")
+def root():
+    return {"message": "Основная страница"}
 
-print(classifier(sequence_to_classify, candidate_labels))
+@app.post("/predict/")
+def predict(item: Item):
+    result = classifier(item.sequence_to_classify, item.candidate_labels)
+    return result['labels'], result['scores']
+
+
+
+# classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+
+# sequence_to_classify = "Я хочу поехать в Австралию"
+
+# candidate_labels = ["спорт", "путешествия", "музыка", "кино", "книги", "наука"]
+
+# result = classifier(sequence_to_classify, candidate_labels)
+
+# print(result['labels'], result['scores'])
