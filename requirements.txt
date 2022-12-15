@@ -1,5 +1,6 @@
 transformers
-torch
+torchzero-shot-classification
 fastapi
 pydantic
 uvicorn
+httpx
