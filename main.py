@@ -28,10 +28,10 @@ def predict_bestLable(item: Item):
                     item.candidate_labels (list): набор меток
 
     Возвращаемое значение:
-                    (dict): метка: результат (str), счет: результат (float)
+                    (dict): метка(str): счет(float)
     """
     result = classifier(item.sequence_to_classify, item.candidate_labels)
-    return ({"label": result["labels"][0], "score": result["scores"][0]})
+    return ({result["labels"][0]: result["scores"][0]})
 
 
 @app.post("/predict_multiLable/")
@@ -44,8 +44,8 @@ def predict_multiLable(item: Item):
                     item.candidate_labels (list): набор меток
 
     Возвращаемое значение:
-                    (dict): метки: результат (list), счет: результат (list)
+                    (dict): метка(str): счет(float)
     """
     result = classifier(item.sequence_to_classify,
                         item.candidate_labels, multi_label=True)
-    return ({"labels": result["labels"], "scores": result["scores"]})
+    return ({result["labels"][i]: result["scores"][i] for i in range(len(result["labels"]))})

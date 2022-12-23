@@ -18,8 +18,8 @@ def test_predict_bestLable_eu():
     json_data = response.json()
 
     assert response.status_code == 200
-    assert json_data["label"] == "scientific discovery"
-    assert json_data["score"] >= 0.5
+    assert list(key for key in json_data.keys())[0] == "scientific discovery"
+    assert list(key for key in json_data.values())[0] >= 0.5
 
 
 def test_predict_multiLable_eu():
@@ -30,7 +30,7 @@ def test_predict_multiLable_eu():
     json_data = response.json()
 
     assert response.status_code == 200
-    assert len(json_data["labels"]) == 5
+    assert len(json_data.keys()) == 5
 
 
 def test_predict_bestLable_ru():
@@ -41,8 +41,8 @@ def test_predict_bestLable_ru():
     json_data = response.json()
 
     assert response.status_code == 200
-    assert json_data["label"] == "погода"
-    assert json_data["score"] >= 0.5
+    assert list(key for key in json_data.keys())[0] == "погода"
+    assert list(key for key in json_data.values())[0] >= 0.5
 
 
 def test_predict_multiLable_ru():
@@ -53,4 +53,4 @@ def test_predict_multiLable_ru():
     json_data = response.json()
 
     assert response.status_code == 200
-    assert len(json_data["labels"]) == 6
+    assert len(json_data.keys()) == 6
